@@ -6,9 +6,9 @@ license-file:        LICENSE
 author:              Guillaume Nargeot
 maintainer:          killy971@gmail.com
 build-type:          Simple
-extra-source-files:  README.md
-cabal-version:       >=1.10
+cabal-version:       >=1.9.2
 
-library
-  build-depends:       base >=4.6 && <4.7
-  default-language:    Haskell2010
+executable hpc-coveralls-experiment
+  hs-source-dirs:      src
+  main-is:             Main.hs
+  build-depends:       aeson, base < 5, bytestring, curl
