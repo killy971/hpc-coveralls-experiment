@@ -3,15 +3,22 @@ module Main where
 import Network.Curl
 import System.Environment (getArgs)
 
-postJson :: String -> String -> IO CurlResponse
+postJson :: URLString -> String -> IO CurlResponse
 postJson url jsonData = do
-    curl <- initialize
-    setopt curl (CurlURL url)
-    setopt curl (CurlPost True)
-    setopt curl (CurlPostFields [jsonData])
-    setopt curl (CurlHttpHeaders ["Content-Type: application/json"])
-    response <- perform_with_response_ curl
-    reset curl
+    writeFile "coverage.json" jsonData
+    h <- initialize
+    setopt h (CurlVerbose True)
+    setopt h (CurlURL url)
+    -- setopt h (CurlPost True)
+    -- setopt h (CurlPostFields [jsonData])
+    -- setopt h (CurlHttpHeaders ["Content-Type: multipart/form-data"])
+    setopt h (CurlHttpPost [HttpPost "json_file"
+        Nothing
+        (ContentFile "coverage.json")
+        []
+        Nothing])
+    response <- perform_with_response_ h
+    reset h
     return response
 
 main :: IO ()
