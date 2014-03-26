@@ -19,7 +19,13 @@ postJson url jsonData = do
         Nothing])
     response <- perform_with_response_ h
     reset h
-    return response
+    case respCurlCode response of
+        CurlOK -> do
+            putStrLn $ respBody response
+            return response
+        c -> do
+            putStrLn $ show c
+            return response
 
 main :: IO ()
 main = do
